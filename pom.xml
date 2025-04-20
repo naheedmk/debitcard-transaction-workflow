@@ -1,0 +1,124 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <!-- Spring Boot Parent -->
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.7.18</version> <!-- Use a recent stable Spring Boot 2.x version compatible with Java 11 -->
+        <relativePath/> <!-- lookup parent from repository -->
+    </parent>
+
+    <groupId>com.example</groupId>
+    <artifactId>debitcard-transaction-workflow</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <packaging>jar</packaging>
+
+    <name>debitcard-transaction-workflow</name>
+    <url>http://maven.apache.org</url>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <java.version>11</java.version> <!-- Updated property name for Spring Boot -->
+        <temporal.sdk.version>1.24.0</temporal.sdk.version> 
+        <!-- slf4j version managed by spring-boot-starter-parent -->
+    </properties>
+
+    <dependencies>
+        <!-- Spring Boot Starter -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter</artifactId>
+        </dependency>
+        
+        <!-- Spring Boot Starter Web -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        
+        <!-- Temporal SDK -->
+        <dependency>
+            <groupId>io.temporal</groupId>
+            <artifactId>temporal-sdk</artifactId>
+            <version>${temporal.sdk.version}</version>
+        </dependency>
+        
+        <!-- Temporal Testing -->
+        <dependency>
+            <groupId>io.temporal</groupId>
+            <artifactId>temporal-testing</artifactId>
+            <version>${temporal.sdk.version}</version>
+            <scope>test</scope>
+        </dependency>
+        
+        <!-- Spring Boot Test -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+     <build>
+        <plugins>
+             <!-- Spring Boot Maven Plugin -->
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+            <!-- Compiler plugin (source/target set via properties) -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.8.1</version>
+                <!-- Configuration for source/target is now handled by parent properties -->
+            </plugin>
+            <!-- Added Exec Maven Plugin Configuration -->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>3.1.0</version> <!-- Use a recent version -->
+                <configuration>
+                    <mainClass>com.example.workflow.TransactionWorker</mainClass>
+                    <cleanupDaemonThreads>false</cleanupDaemonThreads> 
+                </configuration>
+            </plugin>
+            <!-- Shade plugin might conflict with Spring Boot plugin packaging. 
+                 Spring Boot creates executable jars differently. 
+                 Let's remove shade for now. -->
+            <!-- 
+             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>3.2.4</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                        <configuration>
+                            <transformers>
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                                     <mainClass>com.example.workflow.YourSpringBootApplication</mainClass> 
+                                </transformer>
+                            </transformers>
+                            <filters>
+                                <filter>
+                                     <artifact>*:*</artifact>
+                                     <excludes>
+                                         <exclude>META-INF/*.SF</exclude>
+                                         <exclude>META-INF/*.DSA</exclude>
+                                         <exclude>META-INF/*.RSA</exclude>
+                                     </excludes>
+                                 </filter>
+                             </filters>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin> -->
+        </plugins>
+    </build>
+</project> 

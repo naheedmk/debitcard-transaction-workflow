@@ -1,0 +1,29 @@
+# Backup directory
+backup/
+
+# Maven
+target/
+*.jar
+*.war
+*.nar
+*.ear
+*.zip
+*.tar.gz
+*.rar
+
+# IDE files
+.idea/
+*.iml
+*.iws
+*.ipr
+.vscode/
+*.swp
+*.swo
+
+# Logs
+*.log
+logs/
+
+# System files
+.DS_Store
+Thumbs.db 

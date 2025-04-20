@@ -1,0 +1,7 @@
+{
+    "transactionId": "test-txn-001",
+    "accountId": "account-123",
+    "cardId": "card-123",
+    "amount": 100.00,
+    "customerId": "customer-123"
+} 
